@@ -3,11 +3,11 @@ import java.util.concurrent.CountDownLatch
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 object DeadlockDemonstration {
   def main(args: Array[String]): Unit = {
-//    val dead = new DeadlockDemonstration
-//    Try(dead.runTest) match {
-//      case Success(value) ⇒ println("Success")
-//      case Failure(exception) ⇒ println("Failed")
-//    }
+    //    val dead = new DeadlockDemonstration
+    //    Try(dead.runTest) match {
+    //      case Success(value) ⇒ println("Success")
+    //      case Failure(exception) ⇒ println("Failed")
+    //    }
 
     val nreLock = new NonReentrantLock()
     nreLock.lock()
