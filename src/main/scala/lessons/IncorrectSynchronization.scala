@@ -1,4 +1,6 @@
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
+package lessons
+
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 object IncorrectSynchronization {
   def main(args: Array[String]): Unit = {

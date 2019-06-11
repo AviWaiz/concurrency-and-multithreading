@@ -1,6 +1,8 @@
+package lessons
+
+import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
 import scala.util.Random
-import scala.concurrent.duration._
 
 
 // this example shows that two threads updating a value concurrently may cause inconsistencies

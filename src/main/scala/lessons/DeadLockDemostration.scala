@@ -1,9 +1,11 @@
+package lessons
+
 import java.util.concurrent.CountDownLatch
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 object DeadlockDemonstration {
   def main(args: Array[String]): Unit = {
-    //    val dead = new DeadlockDemonstration
+    //    val dead = new lessons.DeadlockDemonstration
     //    Try(dead.runTest) match {
     //      case Success(value) ⇒ println("Success")
     //      case Failure(exception) ⇒ println("Failed")

@@ -1,13 +1,9 @@
+package problems
+
 import scala.annotation.tailrec
-import scala.collection.immutable
-import scala.concurrent.duration._
-import scala.concurrent.{
-  Await,
-  ExecutionContext,
-  ExecutionContextExecutor,
-  Future
-}
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 import scala.util.Random
+
 object MergeSort {
   implicit val executionContext: ExecutionContextExecutor =
     ExecutionContext.global

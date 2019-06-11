@@ -1,3 +1,5 @@
+package lessons;
+
 import java.util.concurrent.CountDownLatch;
 
 class Demonstration1 {

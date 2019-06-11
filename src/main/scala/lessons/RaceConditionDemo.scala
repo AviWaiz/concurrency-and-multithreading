@@ -1,6 +1,8 @@
+package lessons
+
+import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
 import scala.util.Random
-import scala.concurrent.duration._
 
 // when this code runs randInt will print even though the two if statements contradict each other
 // this is because a race condition that will set randInt while printer is checking the value

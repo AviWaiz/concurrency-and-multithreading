@@ -1,3 +1,5 @@
+package lessons
+
 class Employee {
 
   var name: String = ""

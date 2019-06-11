@@ -1,6 +1,8 @@
+package lessons
+
 import scala.collection.immutable
-import scala.concurrent.duration._
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
 object Demonstration {

@@ -1,3 +1,5 @@
+package lessons
+
 object BadSynchronization {
 //  def main(args: Array[String]): Unit = {
 //    val dummyObject: Object = new Object
