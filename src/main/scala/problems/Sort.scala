@@ -1,10 +1,11 @@
 package problems
 
 import scala.annotation.tailrec
+import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 import scala.util.Random
 
-object MergeSort {
+object Sort {
   implicit val executionContext: ExecutionContextExecutor =
     ExecutionContext.global
   val maxDepth: Int = Runtime.getRuntime.availableProcessors()
@@ -32,6 +33,42 @@ object MergeSort {
 //      println(res == res4)
     }
   }
+
+  def partition(arr: ArrayBuffer[Int], start: Int, end: Int): Int = {
+    // pick a random element and move to front of range
+    val randIdx = start + Random.nextInt((end - start) + 1) // inclusive random
+    val partitionValue = arr(randIdx)
+    var partitionIdx = start
+    arr(randIdx) = arr(start)
+    arr(start) = partitionValue
+    (start until end).foreach(i ⇒ {
+      val curr = arr(i)
+      if (curr < partitionValue) {
+        arr(i) = arr(partitionIdx + 1) // next to i
+        arr(partitionIdx) = curr // curr to partition
+        arr(partitionIdx + 1) = partitionValue // partition to next
+        partitionIdx = i
+      }
+    })
+
+    partitionIdx
+  }
+
+
+
+  def quickSort(arr: ArrayBuffer[Int],
+                start: Int,
+                end: Int): Unit = {
+    println("start " + start)
+    println("end " + end)
+    if (start >= end) ()
+    else {
+      val p = partition(arr, start, end)
+      quickSort(arr, start, p - 1)
+      quickSort(arr, p, end)
+    }
+  }
+
 
   def parallelSort(values: List[Int],
                    start: Int,

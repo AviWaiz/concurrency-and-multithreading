@@ -9,16 +9,58 @@ import java.util.concurrent.{
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 import scala.concurrent.duration._
-import scala.util.Random
+import scala.util.{Failure, Random, Success}
 // Queue that blocks enqueue when full and dequeue when empty
 // this can be used to prevent a machine from running out of resources as a collection of jobs gets larger
 // Queue should notify enqueueing about availability and similar for dequeueing
 // have to synchronize on size checks since many threads could be checking at the same time and causing race conditions
 //
 
-// Queue for how many workers can run limit number of jobs
-// limit number of workers
+// Blocking queue similar the the Java example just using ArrayBlockingQueue api
+// and scala futures.
 object BlockingQueue {
+  implicit val executionContext: ExecutionContextExecutor =
+    ExecutionContext.global
+  val capacity = 6
+  val queue: ArrayBlockingQueue[Int] = new ArrayBlockingQueue[Int](capacity)
+
+  def main(args: Array[String]): Unit = {
+    Future {
+      (0 to 50).foreach(i ⇒ {
+        queue.put(i)
+        println("enqueued " + i)
+        println(queue.toArray.toList)
+      })
+    }
+
+    Thread.sleep(4000)
+
+    Future {
+      (0 to 25).foreach(i ⇒ {
+        val polled: Int = queue.take()
+        println("Thread 2 dequeued: " + polled)
+      })
+    }.onComplete {
+      case Success(_: Unit) ⇒
+        Future {
+          (0 to 25).foreach(i ⇒ {
+            val polled: Int = queue.take()
+            println("Thread 3 dequeued: " + polled)
+          })
+        }
+      case Failure(_: Throwable) ⇒ println("Failed")
+    }
+
+    while (true) {
+      println(queue.toArray.toList)
+      Thread.sleep(1000)
+    }
+  }
+
+}
+
+object BlockingQueueJobs {
+  val s = Some(1)
   val numJobs = 100
   val numWorkers = 6
   implicit val executionContext: ExecutionContextExecutor =
@@ -36,10 +78,10 @@ object BlockingQueue {
     // ThreadPoolExecutor
     // corePoolSize, maxPoolSize, timeout, timeoutUnit, workQueue
     val tpe: ThreadPoolExecutor = new ThreadPoolExecutor(numWorkers,
-      numWorkers,
-      100L,
-      TimeUnit.SECONDS,
-      jobQueue)
+                                                         numWorkers,
+                                                         100L,
+                                                         TimeUnit.SECONDS,
+                                                         jobQueue)
     val ec: ExecutionContextExecutor = ExecutionContext.fromExecutor(tpe)
 
     val start = System.currentTimeMillis()
