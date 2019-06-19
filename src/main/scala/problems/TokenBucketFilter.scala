@@ -36,14 +36,32 @@ object TokenBucketFilter {
     // Scala style
     // blocking code blocks should be executed in a separate execution context
     // https://github.com/alexandru/scala-best-practices/blob/master/sections/4-concurrency-parallelism.md#44-must-use-scalas-blockcontext-on-blocking-io
-    val tokenBucketFilter = new TokenBucketFilter(1)
-    val allFutures: Map[String, Future[Unit]] = (0 to 10).map(i ⇒
-      ("Thread_" + (i + 1), Future {
-        blocking {
-          tokenBucketFilter.getToken()
-        }
-        ()
-    }.recover({case _: Exception ⇒ println("We have a problem")}))).toMap
+
+//    val tokenBucketFilter = new TokenBucketFilter(1)
+//    val allFutures: Map[String, Future[Unit]] = (0 to 10).map(i ⇒
+//      ("Thread_" + (i + 1), Future {
+//        blocking {
+//          tokenBucketFilter.getToken()
+//        }
+//        ()
+//    }.recover({case _: Exception ⇒ println("We have a problem")}))).toMap
+
+    // Bucket fills all the way to 5 after 5 seconds
+    // after another 5 seconds The first 5 threads will be granted a token as fast as possible
+    // the sixth thread and onward will wait one second and get a token until 12 is done
+    val tokenBucketFilter = new TokenBucketFilter(5)
+    Thread.sleep(10000)
+    val allFutures: Map[String, Future[Unit]] = (0 to 12)
+      .map(i ⇒
+        ("Thread_" + (i + 1), Future {
+          blocking {
+            tokenBucketFilter.getToken()
+          }
+          ()
+        }.recover({ case _: Exception ⇒ println("We have a problem") })))
+      .toMap
+
+
     // Java Style
 //    val allThreads: Set[Thread] = (0 to 10).map(i ⇒ {
 //      val t = new Thread(() ⇒ {
