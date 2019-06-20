@@ -2,31 +2,32 @@ package problems
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
 import scala.util.Random
+import scala.concurrent.duration._
 
 object Sort {
   implicit val executionContext: ExecutionContextExecutor =
     ExecutionContext.global
   val maxDepth: Int = Runtime.getRuntime.availableProcessors()
   def main(args: Array[String]): Unit = {
-    (100000000 to 100000000).foreach { i ⇒
+    (1000000 to 1000000).foreach { i ⇒
       val vec = (0 to i).toList.map((_: Int) ⇒ Random.nextInt(100000000))
 //      val a = (0 to i).toVector.map((_: Int) ⇒ Random.nextInt(10000000))
-//      val start = System.currentTimeMillis()
-//      val res = mergeSort(vec, 0, vec.size - 1)
-//      println("Time mergeSort" + (System.currentTimeMillis() - start))
-//      val start2 = System.currentTimeMillis()
-//      val res2 =
-//        Await.result(mergeSortParallel(vec, 0, vec.size - 1, 0), 60 seconds)
-//      println("Time mergeSortParallel " + (System.currentTimeMillis() - start2))
+      val start = System.currentTimeMillis()
+      val res = mergeSort(vec, 0, vec.size - 1)
+      println("Time mergeSort " + (System.currentTimeMillis() - start))
+      val start2 = System.currentTimeMillis()
+      val res2 =
+        Await.result(mergeSortParallel(vec, 0, vec.size - 1, 0), 60 seconds)
+      println("Time mergeSortParallel " + (System.currentTimeMillis() - start2))
 //      val start3 = System.currentTimeMillis()
 //      val res3 =
 //        Await.result(parallelSort(vec, 0, vec.size - 1, 0), 60 seconds)
 //      println("Time parallelSort " + (System.currentTimeMillis() - start3))
-      val start4 = System.currentTimeMillis()
-      val res4 = vec.sorted
-      println("Time scalaSort " + (System.currentTimeMillis() - start4))
+//      val start4 = System.currentTimeMillis()
+//      val res4 = vec.sorted
+//      println("Time scalaSort " + (System.currentTimeMillis() - start4))
 //      println(res3 == res4)
 //      println(res3)
 //      println(res2 == res4)
@@ -53,8 +54,6 @@ object Sort {
 
     partitionIdx
   }
-
-
 
   def quickSort(arr: ArrayBuffer[Int],
                 start: Int,
