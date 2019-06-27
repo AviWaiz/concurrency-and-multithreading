@@ -73,7 +73,7 @@ object DeferredCallbackExecutor {
       val currentTime: Long = System.currentTimeMillis()
       while (q.nonEmpty && currentTime >= q.head.executeAt) {
         val callBack: CallBack = q.dequeue()
-        println("Executed at " + System.currentTimeMillis() / 1000 + " required at " + cb.executeAt / 1000 + ": message:" + callBack.message)
+        println("Executed at " + System.currentTimeMillis() / 1000 + " required at " + callBack.executeAt / 1000 + ": message:" + callBack.message)
       }
       sleepFor = if (q.isEmpty) 0 else q.head.executeAt - currentTime
       lastSeenQSize = q.size
